@@ -13,22 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
       - name: Sync fork
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git remote add upstream https://github.com/directus/directus.git
-
-          git fetch upstream
-
-          git checkout main
-
-          git merge upstream/main --ff-only
-
-          git push origin main
+          gh repo sync ${{ github.repository }} -b main
